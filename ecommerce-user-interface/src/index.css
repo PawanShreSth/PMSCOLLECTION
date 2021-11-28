@@ -13,8 +13,14 @@ main {
 
 body {
   margin: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .show {
   right: 0;
+}
+
+div {
+  text-align: center;
 }

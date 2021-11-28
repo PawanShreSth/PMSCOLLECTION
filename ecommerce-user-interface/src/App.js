@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import AppHeader from './components/header/AppHeader';
 import AppFooter from './components/footer/AppFooter';
+import HomeScreen from './screen/HomeScreen';
 
 const App = () => {
   return (
@@ -9,7 +10,7 @@ const App = () => {
 
       <main className="py-3">
         <Container>
-          <h1>Welcome to pmscollection</h1>
+          <HomeScreen />
         </Container>
       </main>
 
