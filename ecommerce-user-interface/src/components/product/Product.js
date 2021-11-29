@@ -1,5 +1,6 @@
 import React from 'react';
-import Card from './Card';
+import Card from '../Card';
+import Rating from '../rating/Rating';
 import { a, div, h3, img } from './Product.module.css';
 
 const Product = ({ _id, name, image, rating, price, numReviews }) => {
@@ -21,13 +22,8 @@ const Product = ({ _id, name, image, rating, price, numReviews }) => {
           </div>
         </a>
 
-        <div className={div}>
-          <div
-            className={div}
-            style={{ marginTop: '0.3rem', marginBottom: '0.3rem' }}
-          >
-            {rating} from {numReviews} reviews
-          </div>
+        <div className={div} style={{ width: '100%' }}>
+          <Rating rating={rating} text={` ${numReviews} reviews`} />
         </div>
 
         <h3 className={h3}>${price}</h3>
