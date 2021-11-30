@@ -3,7 +3,9 @@ import React from 'react';
 const AppFooter = () => {
   return (
     <footer>
-      <div style={{ textAlign: 'center' }}>Copyright &copy; pmscollection</div>
+      <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+        Copyright &copy; pmscollection
+      </div>
     </footer>
   );
 };

@@ -17,15 +17,21 @@
   margin-bottom: 1rem;
 }
 
+.a {
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.2s linear;
+}
+
+.a:hover {
+  color: #fff;
+  transform: scaleX(1.1);
+}
+
 .span {
   font-family: 'Dancing Script';
   font-size: 1.8rem;
   margin-left: 1rem;
-  transition: all 0.2s linear;
-}
-
-.span:hover {
-  transform: scaleX(1.1);
 }
 
 .ul {
@@ -102,11 +108,51 @@
   .header {
     left: 2.4rem;
   }
+
+  .span {
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 555px) {
   .header {
     left: 0.8rem;
+  }
+
+  .header {
+    border-bottom-left-radius: 0;
+    position: fixed;
+    margin-bottom: 0rem;
+  }
+
+  .hamburger {
+    display: inline-block;
+    top: 3px;
+    right: -5px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+  }
+
+  .ul {
+    flex-direction: column;
+    background-color: #001529;
+    position: absolute;
+    top: 48px;
+    right: -1000px;
+    padding: 0;
+    transition: all 0.2s linear;
+    width: 100%;
+    border-bottom-left-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .ul .li {
+    width: 100%;
+    margin: 0;
+  }
+
+  .show {
+    right: 0px !important;
   }
 }
 

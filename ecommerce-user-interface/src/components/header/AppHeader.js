@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   header,
   span,
@@ -9,6 +10,7 @@ import {
   row2,
   row3,
   show,
+  a,
 } from './AppHeader.module.css';
 
 const AppHeader = () => {
@@ -16,15 +18,21 @@ const AppHeader = () => {
   console.log(showClass);
   return (
     <header className={header}>
-      <span className={span}>PMS Collection</span>
+      <Link className={a} to="/">
+        <span className={span}>PMS Collection</span>
+      </Link>
 
       <ul className={`${ul} ${showClass ? show : ''}`}>
-        <li className={li}>
-          <i className="fa fa-shopping-cart"></i>Cart
-        </li>
-        <li className={li}>
-          <i className="fa fa-user"></i>Sign In
-        </li>
+        <Link className={a} to="/cart">
+          <li className={li}>
+            <i className="fa fa-shopping-cart"></i>Cart
+          </li>
+        </Link>
+        <Link className={a} to="/login">
+          <li className={li}>
+            <i className="fa fa-user"></i>Sign In
+          </li>
+        </Link>
       </ul>
 
       <span className={hamburger} onClick={() => setShowClass(!showClass)}>

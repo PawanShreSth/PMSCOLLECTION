@@ -64,7 +64,15 @@ const Rating = ({ rating, text }) => {
               }`}
         ></i>
       </span>
-      <span>{text && text}</span>
+      <div
+        style={{
+          padding: '.5rem',
+
+          fontSize: '.8rem',
+        }}
+      >
+        {text && text}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { gridContainer } from './HomeScreen.module.css';
+import { gridContainer } from './HomePage.module.css';
 import Product from '../components/product/Product.js';
 import products from '../products';
 
