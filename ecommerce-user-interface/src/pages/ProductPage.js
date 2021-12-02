@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import Rating from '../components/rating/Rating';
@@ -16,13 +16,13 @@ const ProductPage = () => {
   const [product, setProduct] = useState({})
   const { id } = useParams();
   
-  const getProduct = async () => {
+  const getProduct = useCallback(async () => {
     const res = await axios.get(`/api/products/${id}`);
 
     if (res) {
       setProduct(res.data)
     }
-  }
+  }, [id])
 
   useEffect(() => {
     getProduct();

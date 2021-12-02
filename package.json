@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "dependencies": {
-    "express": "^4.17.1",
-    "react-router-dom": "^6.0.2"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "nodemon": "^2.0.15"
+  },
   "scripts": {
-    "start": "node ecommerce-server-side/server"
+    "start": "node ecommerce-server-side/server",
+    "server": "nodemon ecommerce-server-side/server",
+    "client": "npm start --prefix ecommerce-user-interface",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
