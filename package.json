@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "express": "^4.17.1",
     "react-router-dom": "^6.0.2"
   },
   "devDependencies": {},
