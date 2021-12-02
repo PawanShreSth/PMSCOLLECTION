@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios'
 import { useParams } from 'react-router-dom';
-import products from '../products';
 import Rating from '../components/rating/Rating';
 import {
   div,
@@ -13,8 +13,20 @@ import {
 } from './ProductPage.module.css';
 
 const ProductPage = () => {
+  const [product, setProduct] = useState({})
   const { id } = useParams();
-  const product = products.find(prod => prod._id === id);
+  
+  const getProduct = async () => {
+    const res = await axios.get(`/api/products/${id}`);
+
+    if (res) {
+      setProduct(res.data)
+    }
+  }
+
+  useEffect(() => {
+    getProduct();
+  }, [])
 
   return (
     <>
