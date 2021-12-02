@@ -67,7 +67,7 @@ const Rating = ({ rating, text }) => {
       <div
         style={{
           padding: '.5rem',
-
+          textAlign: 'center',
           fontSize: '.8rem',
         }}
       >
