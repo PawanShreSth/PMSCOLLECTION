@@ -1,0 +1,23 @@
+{
+  "name": "pmscollection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "react-router-dom": "^6.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PawanShreSth/PMSCOLLECTION.git"
+  },
+  "author": "Pawan Shrestha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PawanShreSth/PMSCOLLECTION/issues"
+  },
+  "homepage": "https://github.com/PawanShreSth/PMSCOLLECTION#readme"
+}
