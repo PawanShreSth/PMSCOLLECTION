@@ -13,7 +13,7 @@ const products = [
   {
     name: 'Brown Jacket',
     image: '/images/brown_jacket.jpg',
-    description: '',
+    description: '...',
     category: 'Clothes',
     price: 2000,
     countInStock: 7,
@@ -23,7 +23,7 @@ const products = [
   {
     name: 'Illuminati Jacket',
     image: '/images/illuminati.jpg',
-    description: '',
+    description: '...',
     category: 'Clothes',
     price: 2500,
     countInStock: 5,
@@ -33,7 +33,7 @@ const products = [
   {
     name: 'Black Plain Adidas Jacket',
     image: '/images/adidas_jacket.jpg',
-    description: '',
+    description: '...',
     category: 'Clothes',
     price: 2500,
     countInStock: 11,
@@ -43,7 +43,7 @@ const products = [
   {
     name: 'Jacket with stickers',
     image: '/images/jacket_with_stickers.jpg',
-    description: '',
+    description: '...',
     category: 'Clothes',
     price: 3500,
     countInStock: 7,
@@ -53,7 +53,7 @@ const products = [
   {
     name: 'Nike Bag',
     image: '/images/nike_bag.jpg',
-    description: '',
+    description: '...',
     category: 'Bag',
     price: 1500,
     countInStock: 0,
@@ -63,7 +63,7 @@ const products = [
   {
     name: 'Sports Bag',
     image: '/images/sportsbag.jpg',
-    description: '',
+    description: '...',
     category: 'Bag',
     price: 1700,
     countInStock: 0,
@@ -73,7 +73,7 @@ const products = [
   {
     name: 'Trousers',
     image: '/images/trousers.jpg',
-    description: '',
+    description: '...',
     category: 'Clothes',
     price: 1100,
     countInStock: 0,

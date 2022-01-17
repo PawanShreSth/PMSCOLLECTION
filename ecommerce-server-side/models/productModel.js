@@ -1,10 +1,10 @@
-import { Schema, model } from 'mongoose';
-import reviewSchema from './reviewModel';
+import mongoose from 'mongoose';
+import reviewSchema from './reviewModel.js';
 
-const productSchema = Schema(
+const productSchema = mongoose.Schema(
   {
     // For determining which admin created a product - // Will hold user/admins ID
-    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     name: { type: String, required: true },
     image: { type: String, required: true },
     category: { type: String, required: true },
@@ -19,6 +19,6 @@ const productSchema = Schema(
   { timestamps: true } // helps to create "created at" and "updated at" fields automatically
 );
 
-const Product = model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 export default Product;

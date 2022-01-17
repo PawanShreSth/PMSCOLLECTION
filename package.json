@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "module",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.1.6"
@@ -17,7 +18,9 @@
     "start": "node ecommerce-server-side/server",
     "server": "nodemon ecommerce-server-side/server",
     "client": "npm start --prefix ecommerce-user-interface",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dataimport": "node ecommerce-server-side/seeder",
+    "datadestroy": "node ecommerce-server-side/seeder -d"
   },
   "repository": {
     "type": "git",
