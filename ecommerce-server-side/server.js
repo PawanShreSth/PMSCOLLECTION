@@ -1,5 +1,5 @@
 import express from 'express';
-import products from './product-data/products.js';
+import products from './data/products.js';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 

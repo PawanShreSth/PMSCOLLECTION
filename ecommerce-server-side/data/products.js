@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'Compton Gray Cap',
     image: '/images/compton_cap.jpg',
     description:
@@ -12,11 +11,9 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '2',
     name: 'Brown Jacket',
     image: '/images/brown_jacket.jpg',
-    description:
-      '',
+    description: '',
     category: 'Clothes',
     price: 2000,
     countInStock: 7,
@@ -24,11 +21,9 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: '3',
     name: 'Illuminati Jacket',
     image: '/images/illuminati.jpg',
-    description:
-      '',
+    description: '',
     category: 'Clothes',
     price: 2500,
     countInStock: 5,
@@ -36,11 +31,9 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '4',
     name: 'Black Plain Adidas Jacket',
     image: '/images/adidas_jacket.jpg',
-    description:
-      '',
+    description: '',
     category: 'Clothes',
     price: 2500,
     countInStock: 11,
@@ -48,11 +41,9 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '5',
     name: 'Jacket with stickers',
     image: '/images/jacket_with_stickers.jpg',
-    description:
-      '',
+    description: '',
     category: 'Clothes',
     price: 3500,
     countInStock: 7,
@@ -60,11 +51,9 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: '6',
     name: 'Nike Bag',
     image: '/images/nike_bag.jpg',
-    description:
-      '',
+    description: '',
     category: 'Bag',
     price: 1500,
     countInStock: 0,
@@ -72,11 +61,9 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '7',
     name: 'Sports Bag',
     image: '/images/sportsbag.jpg',
-    description:
-      '',
+    description: '',
     category: 'Bag',
     price: 1700,
     countInStock: 0,
@@ -84,17 +71,15 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '8',
     name: 'Trousers',
     image: '/images/trousers.jpg',
-    description:
-      '',
+    description: '',
     category: 'Clothes',
     price: 1100,
     countInStock: 0,
     rating: 4,
     numReviews: 12,
   },
-]
+];
 
-export default products
+export default products;
