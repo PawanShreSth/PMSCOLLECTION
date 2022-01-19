@@ -1,33 +1,38 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { gridContainer } from './HomePage.module.css';
 import Product from '../components/product/Product.js';
+import { listProducts } from '../actions/productActions';
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]); // Default value is an empty array
+  const dispatch = useDispatch();
 
-  const getProducts = async () => {
-    const res = await axios.get('/api/products');
+  const productList = useSelector(state => state.productList);
 
-    if (res) {
-      setProducts(res.data)
-    }
-  }
+  const { loading, error, products } = productList;
 
   useEffect(() => {
-    getProducts();
-  }, [])
+    listProducts(dispatch);
+  }, [dispatch]);
+
+  // const products = [];
 
   return (
     <>
       <h1>Latest Products</h1>
-      <div className={gridContainer}>
-        {products.map(product => (
-          <div>
-            <Product {...product} />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <h2>Loading</h2>
+      ) : error ? (
+        <h3>{error}</h3>
+      ) : (
+        <div className={gridContainer}>
+          {products.map(product => (
+            <div>
+              <Product {...product} />
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 };

@@ -9,7 +9,12 @@ router.get(
   '/',
   expressAsyncHandler(async (req, res) => {
     const products = await Product.find({});
-    res.json(products);
+    if (products) {
+      res.json(products);
+    } else {
+      res.status(404);
+      throw new Error('No product available');
+    }
   })
 );
 
@@ -23,9 +28,8 @@ router.get(
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({
-        message: 'Product not found',
-      });
+      res.status(404);
+      throw new Error('Product not found');
     }
   })
 );
