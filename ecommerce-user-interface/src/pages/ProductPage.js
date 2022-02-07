@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import axios from 'axios'
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../components/rating/Rating';
 import {
   div,
@@ -11,60 +11,57 @@ import {
   childDiv,
   divWithButton,
 } from './ProductPage.module.css';
+import { listProductDetails } from '../actions/productActions';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 const ProductPage = () => {
-  const [product, setProduct] = useState({})
+  const dispatch = useDispatch();
+  const productDetails = useSelector(state => state.productDetails);
   const { id } = useParams();
-  
-  const getProduct = useCallback(async () => {
-    const res = await axios.get(`/api/products/${id}`);
-
-    if (res) {
-      setProduct(res.data)
-    }
-  }, [id])
 
   useEffect(() => {
-    getProduct();
-  }, [])
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
+
+  const { product, loading, error } = productDetails;
 
   return (
     <>
-      <div className={div} >
-        <img className={img} src={product.image} alt={product.name} />
-        <div className={divChild} >
-          <h5 className={h5}>{product.name}</h5>
-          <h6 style={{ textAlign: 'center', width: '100%' }}>
-            <b>Price: ${product.price}</b>
-          </h6>
-          <Rating
-            rating={product.rating}
-            text={`${product.description}`}
-          />
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <div className={div}>
+          <img className={img} src={product.image} alt={product.name} />
+          <div className={divChild}>
+            <h5 className={h5}>{product.name}</h5>
+            <h6 style={{ textAlign: 'center', width: '100%' }}>
+              <b>Price: ${product.price}</b>
+            </h6>
+            <Rating rating={product.rating} text={`${product.description}`} />
 
-          <div className={parentDiv}>
-            <div>
-              <div className={childDiv}>
-                <span>Price:</span>
-                <span>${product.price}</span>
-              </div>
-              <div className={childDiv}>
-                <span>Status:</span>
-                <span>
-                  {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
-                </span>
-              </div>
-              <div className={divWithButton}>
-                <button>Add To Cart</button>
+            <div className={parentDiv}>
+              <div>
+                <div className={childDiv}>
+                  <span>Price:</span>
+                  <span>${product.price}</span>
+                </div>
+                <div className={childDiv}>
+                  <span>Status:</span>
+                  <span>
+                    {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                  </span>
+                </div>
+                <div className={divWithButton}>
+                  <button>Add To Cart</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        
-      </div>
-
-      
+      )}
     </>
   );
 };

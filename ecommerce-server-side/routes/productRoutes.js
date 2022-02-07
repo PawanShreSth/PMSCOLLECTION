@@ -4,11 +4,11 @@ const router = express.Router();
 import Product from '../models/productModel.js';
 
 // When "/api/products/" route is hit then all products will be retrieved from DB and then sent to the client.
-// Public routes, token not required.
 router.get(
   '/',
   expressAsyncHandler(async (req, res) => {
     const products = await Product.find({});
+
     if (products) {
       res.json(products);
     } else {
@@ -19,7 +19,7 @@ router.get(
 );
 
 // If there is an ID in the body section of the request when the req hits "/api/products/:id",
-// it will be used to find the particular product in database and sent to the client. Public routes, token not required.
+// it will be used to find the particular product in database and sent to the client.
 router.get(
   '/:id',
   expressAsyncHandler(async (req, res) => {

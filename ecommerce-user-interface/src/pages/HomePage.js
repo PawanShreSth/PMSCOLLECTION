@@ -4,26 +4,26 @@ import { gridContainer } from './HomePage.module.css';
 import Product from '../components/product/Product.js';
 import { listProducts } from '../actions/productActions';
 
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
   const productList = useSelector(state => state.productList);
-
+  console.log(productList);
   const { loading, error, products } = productList;
 
   useEffect(() => {
-    listProducts(dispatch);
+    dispatch(listProducts());
   }, [dispatch]);
-
-  // const products = [];
 
   return (
     <>
-      <h1>Latest Products</h1>
       {loading ? (
-        <h2>Loading</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <div className={gridContainer}>
           {products.map(product => (
