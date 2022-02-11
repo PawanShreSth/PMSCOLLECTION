@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { gridContainer } from './HomePage.module.css';
 import Product from '../components/product/Product.js';
 import { listProducts } from '../actions/productActions';
+import { Container } from 'react-bootstrap';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -19,7 +20,7 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <Container>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -33,7 +34,7 @@ const HomeScreen = () => {
           ))}
         </div>
       )}
-    </>
+    </Container>
   );
 };
 
