@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema(
   { timestamps: true } // helps to create "created at" and "updated at" fields automatically
 );
 
+// Checking if the sent password matches with password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
@@ -20,6 +21,7 @@ userSchema.pre('save', async function (next) {
     next();
   }
 
+  // Encrypting before saving it in database
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { NavDropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logout } from '../../actions/userActions';
 import {
   header,
   span,
@@ -14,7 +17,16 @@ import {
 } from './AppHeader.module.css';
 
 const AppHeader = () => {
+  const dispatch = useDispatch();
   const [showClass, setShowClass] = useState(false);
+  const userLogin = useSelector(state => state.userLogin);
+
+  const { userInfo } = userLogin;
+
+  const logoutHandler = _ => {
+    dispatch(logout());
+  };
+
   console.log(showClass);
   return (
     <header className={header}>
@@ -28,11 +40,24 @@ const AppHeader = () => {
             <i className="fa fa-shopping-cart"></i>Cart
           </li>
         </Link>
-        <Link className={a} to="/login">
-          <li className={li}>
-            <i className="fa fa-user"></i>Sign In
-          </li>
-        </Link>
+
+        {userInfo ? (
+          <NavDropdown title={userInfo.name} id="username">
+            <NavDropdown.Item>
+              <Link style={{ textDecoration: 'none' }} to="/profile">
+                Profile
+              </Link>
+            </NavDropdown.Item>
+
+            <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+          </NavDropdown>
+        ) : (
+          <Link className={a} to="/login">
+            <li className={li}>
+              <i className="fa fa-user"></i>Sign In
+            </li>
+          </Link>
+        )}
       </ul>
 
       <span className={hamburger} onClick={() => setShowClass(!showClass)}>
