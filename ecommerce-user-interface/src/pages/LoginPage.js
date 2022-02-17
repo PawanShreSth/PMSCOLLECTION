@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { login } from '../actions/userActions';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 import {
-  html,
-  body,
   App,
-  logo,
   form,
   inputGroup,
-  secondary,
   primary,
+  secondary,
 } from './LoginPage.module.css';
-import { message } from 'antd';
 
 function useQuery() {
   const { search } = useLocation();
@@ -34,12 +31,14 @@ const LoginPage = () => {
   const { loading, error, userInfo } = userLogin;
 
   let query = useQuery();
+
+  // If there is redirect query param then it will redirect to shipping instead of /.
   const redirect = query.get('redirect') ? query.get('redirect') : '/';
 
   useEffect(() => {
     if (userInfo) {
-      // window.location.href = redirect;
-      navigate(redirect);
+      console.log(redirect);
+      navigate(redirect !== '/' ? '/' + redirect : '/');
     }
   }, [userInfo, redirect]);
 

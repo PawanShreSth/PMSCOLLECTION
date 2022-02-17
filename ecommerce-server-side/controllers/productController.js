@@ -12,7 +12,7 @@ const getProducts = async (req, res) => {
     res.json(products);
   } catch (e) {
     res.status(404).json({
-      message: 'Cannot GET products',
+      message: e.message,
     });
   }
 };

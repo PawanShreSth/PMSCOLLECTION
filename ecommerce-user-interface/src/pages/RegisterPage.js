@@ -87,7 +87,7 @@ const RegisterPage = () => {
             <input
               onChange={e => setName(e.target.value)}
               value={name}
-              type="name"
+              type="text"
               name="name"
               placeholder="John smith"
             />

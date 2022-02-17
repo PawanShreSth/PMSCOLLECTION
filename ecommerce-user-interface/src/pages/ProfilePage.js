@@ -16,12 +16,6 @@ import {
   primary,
 } from './RegisterPage.module.css';
 
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
-
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -39,9 +33,7 @@ const ProfilePage = () => {
   const { userInfo } = userLogin;
 
   const userUpdateProfile = useSelector(state => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
-
-  let query = useQuery();
+  const { success, error: updateProfileError } = userUpdateProfile;
 
   useEffect(() => {
     if (!userInfo) {
@@ -83,6 +75,9 @@ const ProfilePage = () => {
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {updateProfileError && (
+          <Message variant="danger">{updateProfileError}</Message>
+        )}
         {success && (
           <Message variant="success">Profile Updated Successfully</Message>
         )}
