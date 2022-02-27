@@ -1,83 +1,83 @@
-import React, { useEffect } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { createOrder } from '../actions/orderActions';
-import CheckoutSteps from '../components/CheckoutSteps';
+import { Link, useParams } from 'react-router-dom';
+import { getOrderDetails, payOrder } from '../actions/orderActions';
+import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { PayPalButton } from 'react-paypal-button-v2';
+import {
+  ORDER_PAY_RESET,
+  ORDER_DETAILS_RESET,
+} from '../constant/orderConstants';
 
-const PlaceOrderPage = () => {
-  const cart = useSelector(s => s.cart);
-  const navigate = useNavigate();
-
-  const userLogin = useSelector(state => state.userLogin);
-  const { userInfo } = userLogin;
-
-  useEffect(() => {
-    if (!userInfo) {
-      navigate('/login');
-    }
-  }, [navigate, userInfo]);
-
+const OrderPage = () => {
+  // const navigate = useNavigate();
+  const { orderId } = useParams();
+  const [sdkReady, setSdkReady] = useState(false);
+  console.log(orderId);
   const dispatch = useDispatch();
 
-  const decimalsAdd = number => {
-    return (Math.round(number * 100) / 100).toFixed(2);
-  };
+  const orderDetails = useSelector(s => s.orderDetails);
+  const { order, loading, error } = orderDetails;
 
-  const orderCreate = useSelector(s => s.orderCreate);
-  const { order, success, error } = orderCreate;
-  console.log('POP: ', order);
+  const orderPay = useSelector(s => s.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
+
   useEffect(() => {
-    if (success) {
-      navigate(`/order/${order._id}`);
+    // Building script tag dynamically usinh JS DOM.
+    const addPaypalScript = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+
+    if (successPay || !order) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPaypalScript();
+      } else {
+        setSdkReady(true);
+      }
     }
+  }, [dispatch, orderId, successPay, order]);
 
-    // eslint-disable-next-line
-  });
+  useEffect(() => {
+    dispatch({ type: ORDER_DETAILS_RESET });
+  }, [dispatch]);
 
-  // Calculation of prices
-  cart.itemsPrice = decimalsAdd(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  );
-
-  console.log(Number(cart.itemsPrice));
-
-  // Calculate shipping price
-  cart.shippingPrice = decimalsAdd(cart.itemsPrice > 10000 ? 0 : 150);
-
-  // Calculate Tax price
-  cart.taxPrice = decimalsAdd(Number((0.15 * cart.itemsPrice).toFixed(2)));
-
-  // Total Price Calculation
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2);
-
-  const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        shippingPrice: Number(cart.shippingPrice),
-        taxPrice: Number(cart.taxPrice),
-        totalPrice: Number(cart.totalPrice),
-        itemsPrice: Number(cart.itemsPrice),
-      })
-    );
+  const successPaymentHandler = paymentResult => {
+    console.log(paymentResult);
+    dispatch(payOrder(orderId, paymentResult));
   };
 
-  return (
+  console.log(order);
+  return loading ? (
+    <Loader />
+  ) : error ? (
+    <Message variant="danger">{error}</Message>
+  ) : (
     <>
-      <Row className="justify-content-md-center">
-        <Col xs={12} md={8}>
-          <CheckoutSteps step1 step2 step3 step4 />
-        </Col>
-      </Row>
-
+      <h1>Order {order._id}</h1>
+      {order.isDelivered ? (
+        <Message variant="success">Deliverd on {order.deliveredAt}</Message>
+      ) : (
+        <Message variant="danger">Not Delivered</Message>
+      )}
+      {order.isPaid ? (
+        <Message variant="success">Paid on {order.paidAt}</Message>
+      ) : (
+        <Message variant="danger">Not Paid</Message>
+      )}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
           style={{
@@ -91,16 +91,26 @@ const PlaceOrderPage = () => {
         >
           <div style={{ textAlign: 'left' }}>
             <p style={{ padding: '0.5rem' }}>
+              <strong>Name: </strong> {order.user.name}
+              <p>
+                <strong>Email: </strong>
+                <a
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  href={`mailto:${order.user.email}`}
+                >
+                  {order.user.email}
+                </a>
+              </p>
               <strong>Shipping Address: </strong>
-              {cart.shippingAddress.address}, {cart.shippingAddress.city},{' '}
-              {cart.shippingAddress.postalCode}
+              {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
+              {order.shippingAddress.postalCode}
             </p>
           </div>
 
           <div style={{ textAlign: 'left' }}>
             <p style={{ padding: '0.5rem' }}>
               <strong>Payment Method: </strong>
-              {cart.paymentMethod}
+              {order.paymentMethod}
             </p>
           </div>
 
@@ -115,6 +125,7 @@ const PlaceOrderPage = () => {
               margin: '0 auto',
               outline: '1px solid white',
               outlineOffset: '-5px',
+              marginBottom: '1rem',
             }}
           >
             <li>
@@ -123,41 +134,42 @@ const PlaceOrderPage = () => {
             <li style={{ marginBottom: '.3rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Items</span>
-                <span>Rs.{cart.itemsPrice}</span>
+                <span>Rs.{order.itemsPrice}</span>
               </div>
             </li>
             <li style={{ marginBottom: '.3rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Shipping</span>
-                <span>Rs.{cart.shippingPrice}</span>
+                <span>Rs.{order.shippingPrice}</span>
               </div>
             </li>
             <li style={{ marginBottom: '.3rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Tax</span>
-                <span>Rs.{cart.taxPrice}</span>
+                <span>Rs.{order.taxPrice}</span>
               </div>
             </li>
             <li style={{ marginBottom: '.3rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Total</span>
-                <span>Rs.{cart.totalPrice}</span>
+                <span>Rs.{order.totalPrice}</span>
               </div>
             </li>
-
-            <li>{error && <Message variant="danger">{error}</Message>}</li>
-
-            <li style={{ marginBottom: '.3rem' }}>
-              <Button
-                type="button"
-                className="btn-block"
-                disabled={cart.cartItems.length === 0}
-                onClick={placeOrderHandler}
-              >
-                Place Order
-              </Button>
-            </li>
           </ul>
+
+          {!order.isPaid && (
+            <div>
+              {loadingPay && <Loader />}
+              {!sdkReady ? (
+                <Loader />
+              ) : (
+                <PayPalButton
+                  amount={order.totalPrice}
+                  onSuccess={successPaymentHandler}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -186,8 +198,8 @@ const PlaceOrderPage = () => {
           <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>
             Order Items
           </h2>
-          {cart.cartItems.length === 0 ? (
-            <Message>Order is empty</Message>
+          {order.orderItems.length === 0 ? (
+            <Message>Your order is empty</Message>
           ) : (
             <ul
               style={{
@@ -199,7 +211,7 @@ const PlaceOrderPage = () => {
                 alignItems: 'center',
               }}
             >
-              {cart.cartItems.map((item, index) => (
+              {order.orderItems.map((item, index) => (
                 <li
                   key={index}
                   style={{
@@ -251,4 +263,4 @@ const PlaceOrderPage = () => {
   );
 };
 
-export default PlaceOrderPage;
+export default OrderPage;

@@ -107,3 +107,25 @@ button.secondary {
 button.secondary:hover {
   background: #a8c787;
 }
+
+.uniqueInputGroup > label {
+  font-family: 'Roboto', sans-serif;
+  max-width: 420px;
+  text-align: left;
+}
+
+.uniqueInputGroup > label {
+  color: #676767;
+  display: inline-block;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.uniqueInputGroup > input {
+  background: #f2f2f5;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  color: #676767;
+  font-size: 16px;
+  outline: 0;
+}

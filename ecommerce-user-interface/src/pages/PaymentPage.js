@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { savePaymentMethod } from '../actions/cartActions';
 import CheckoutSteps from '../components/CheckoutSteps';
 import FormContainer from '../components/FormContainer';
-import { input, primary, label } from './PaymentPage.module.css';
+import { ORDER_CREATE_RESET } from '../constant/orderConstants';
+import { input, label, primary } from './PaymentPage.module.css';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
   const cart = useSelector(state => state.cart);
   const { shippingAddress } = cart;
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
+  }, [navigate, userInfo]);
 
   if (!shippingAddress) {
     // If user continues to payment without filling shipping info then redirecting them back to shipping form
@@ -29,6 +39,7 @@ const PaymentPage = () => {
     }
 
     dispatch(savePaymentMethod(paymentMethod));
+    dispatch({ type: ORDER_CREATE_RESET });
     navigate('/placeorder');
   };
 

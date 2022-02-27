@@ -40,7 +40,7 @@ const LoginPage = () => {
       console.log(redirect);
       navigate(redirect !== '/' ? '/' + redirect : '/');
     }
-  }, [userInfo, redirect]);
+  }, [userInfo, redirect, navigate]);
 
   const submitHandler = e => {
     e.preventDefault();

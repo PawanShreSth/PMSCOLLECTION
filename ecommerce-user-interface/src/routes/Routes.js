@@ -10,11 +10,18 @@ import ProfilePage from '../pages/ProfilePage';
 import ShippingPage from '../pages/ShippingPage';
 import PaymentPage from '../pages/PaymentPage';
 import PlaceOrderPage from '../pages/PlaceOrderPage';
+import OrderPage from '../pages/OrderPage';
+import UserListPage from '../pages/UserListPage';
+import UserEditPage from '../pages/UserEditPage';
+import ProductEditPage from '../pages/ProductEditPage';
+import ProductListPage from '../pages/ProductListPage';
 
 const UIRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+
+      <Route path="/order/:orderId" element={<OrderPage />} />
 
       <Route path="/shipping" element={<ShippingPage />} />
 
@@ -33,6 +40,17 @@ const UIRoutes = () => {
       <Route path="/cart" element={<CartPage />} />
 
       <Route path="/cart/:productId" element={<CartPage />} />
+
+      <Route path="/admin/userlist" element={<UserListPage />} />
+
+      <Route path="/admin/productlist" element={<ProductListPage />} />
+
+      <Route path="/admin/user/:userId/edit" element={<UserEditPage />} />
+
+      <Route
+        path="/admin/product/:productId/edit"
+        element={<ProductEditPage />}
+      />
 
       <Route path="*" element={<Error />} />
     </Routes>

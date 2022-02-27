@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { saveShippingAddress } from '../actions/cartActions';
@@ -15,6 +15,15 @@ const ShippingPage = () => {
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
 
   const dispatch = useDispatch();
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
+  }, [navigate, userInfo]);
 
   const submitHandler = e => {
     e.preventDefault();

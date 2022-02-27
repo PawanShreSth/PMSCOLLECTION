@@ -15,7 +15,6 @@ import {
 } from './CartPage.module.css';
 import { BsTrashFill } from 'react-icons/bs';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { Tooltip } from 'react-bootstrap';
 
 function useQuery() {
   const { search } = useLocation();

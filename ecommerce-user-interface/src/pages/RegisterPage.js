@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { register } from '../actions/userActions';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 import {
-  html,
-  body,
   App,
-  logo,
   form,
   inputGroup,
-  secondary,
   primary,
+  secondary,
 } from './RegisterPage.module.css';
 
 function useQuery() {
@@ -44,7 +41,7 @@ const RegisterPage = () => {
       // window.location.href = redirect;
       navigate(redirect);
     }
-  }, [userInfo, redirect]);
+  }, [userInfo, redirect, navigate]);
 
   const submitHandler = e => {
     e.preventDefault();

@@ -58,6 +58,29 @@ const AppHeader = () => {
             </li>
           </Link>
         )}
+
+        {userInfo && userInfo.isAdmin && (
+          <NavDropdown title="Admin" id="adminmenu">
+            <NavDropdown.Item>
+              <Link
+                style={{ textDecoration: 'none', display: 'block' }}
+                to="/admin/userlist"
+              >
+                Users
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link style={{ textDecoration: 'none' }} to="/admin/productlist">
+                Products
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link style={{ textDecoration: 'none' }} to="/admin/orderlist">
+                Orders
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
+        )}
       </ul>
 
       <span className={hamburger} onClick={() => setShowClass(!showClass)}>
