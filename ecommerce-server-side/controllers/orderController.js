@@ -131,3 +131,28 @@ export const getOrders = async (req, res) => {
     });
   }
 };
+
+// Description - Update order status to delivered
+// Route - GET /api/orders/:id/deliver
+// Access - Private/Admin
+export const updateOrderStatusToDelivered = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+
+      const updateOrder = await order.save();
+
+      res.json(updatedOrder);
+    } else {
+      res.status(404);
+      throw new Error('Order not found');
+    }
+  } catch (error) {
+    res.json({
+      message: error.message,
+    });
+  }
+};

@@ -15,6 +15,7 @@ import UserListPage from '../pages/UserListPage';
 import UserEditPage from '../pages/UserEditPage';
 import ProductEditPage from '../pages/ProductEditPage';
 import ProductListPage from '../pages/ProductListPage';
+import OrderListPage from '../pages/OrderListPage';
 
 const UIRoutes = () => {
   return (
@@ -44,6 +45,8 @@ const UIRoutes = () => {
       <Route path="/admin/userlist" element={<UserListPage />} />
 
       <Route path="/admin/productlist" element={<ProductListPage />} />
+
+      <Route path="/admin/orderlist" element={<OrderListPage />} />
 
       <Route path="/admin/user/:userId/edit" element={<UserEditPage />} />
 

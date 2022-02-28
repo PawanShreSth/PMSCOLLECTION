@@ -1,23 +1,31 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import { getOrderDetails, payOrder } from '../actions/orderActions';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import {
+  deliverOrder,
+  getOrderDetails,
+  payOrder,
+} from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PayPalButton } from 'react-paypal-button-v2';
 import {
   ORDER_PAY_RESET,
   ORDER_DETAILS_RESET,
+  ORDER_DELIVER_RESET,
 } from '../constant/orderConstants';
 
 const OrderPage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { orderId } = useParams();
   const [sdkReady, setSdkReady] = useState(false);
   console.log(orderId);
   const dispatch = useDispatch();
+
+  const userLogin = useSelector(s => s.userLogin);
+  const { userInfo } = userLogin;
 
   const orderDetails = useSelector(s => s.orderDetails);
   const { order, loading, error } = orderDetails;
@@ -25,7 +33,14 @@ const OrderPage = () => {
   const orderPay = useSelector(s => s.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
+  const orderDeliver = useSelector(s => s.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
   useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
+
     // Building script tag dynamically usinh JS DOM.
     const addPaypalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
@@ -39,8 +54,9 @@ const OrderPage = () => {
       document.body.appendChild(script);
     };
 
-    if (successPay || !order) {
+    if (successPay || !order || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -49,7 +65,7 @@ const OrderPage = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, orderId, successPay, order]);
+  }, [dispatch, orderId, successPay, successDeliver, order]);
 
   useEffect(() => {
     dispatch({ type: ORDER_DETAILS_RESET });
@@ -58,6 +74,10 @@ const OrderPage = () => {
   const successPaymentHandler = paymentResult => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
   };
 
   console.log(order);
@@ -168,6 +188,20 @@ const OrderPage = () => {
                   onSuccess={successPaymentHandler}
                 />
               )}
+            </div>
+          )}
+
+          {loadingDeliver && <Loader />}
+
+          {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+            <div>
+              <Button
+                type="button"
+                className="btn btn-block"
+                onClick={deliverHandler}
+              >
+                Mark As Delivered
+              </Button>
             </div>
           )}
         </div>
