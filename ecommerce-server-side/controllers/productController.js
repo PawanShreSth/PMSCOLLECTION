@@ -3,13 +3,27 @@ import Product from '../models/productModel.js';
 
 // When "/api/products/" route is hit then all products will be retrieved from DB and then sent to the client.
 const getProducts = async (req, res) => {
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+        },
+      }
+    : {};
+
   try {
-    const products = await Product.find({});
+    const count = await Product.count({ ...keyword });
+    const products = await Product.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
 
     if (!products) {
       throw new Error('Cannot GET products');
     }
-    res.json(products);
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } catch (e) {
     res.status(404).json({
       message: e.message,
@@ -94,10 +108,60 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Description - Create new review
+// Route - POST /api/products/:id/reviews
+// Access - Private/
+const createdProductReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        r => r.user.toString() === req.user._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        res.status(400); // Bad Request
+        throw new Error('Product already reviewed');
+      }
+
+      const review = {
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+        user: req.user._id,
+      };
+
+      product.reviews.push(review);
+
+      product.numReviews = product.reviews.length;
+
+      product.averageRating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(201).json({
+        message: 'Review Added',
+      });
+    } else {
+      res.status(404);
+      throw new Error('Product not found');
+    }
+  } catch (error) {
+    res.json({
+      message: error.message,
+    });
+  }
+};
+
 export {
   getProducts,
   getProductById,
   deleteProduct,
   updateProduct,
   createProduct,
+  createdProductReview,
 };

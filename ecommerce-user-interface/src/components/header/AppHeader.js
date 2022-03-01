@@ -15,6 +15,7 @@ import {
   show,
   a,
 } from './AppHeader.module.css';
+import SearchBox from '../SearchBox';
 
 const AppHeader = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const AppHeader = () => {
       <Link className={a} to="/">
         <span className={span}>PMS Collection</span>
       </Link>
+
+      <SearchBox />
 
       <ul className={`${ul} ${showClass ? show : ''}`}>
         <Link className={a} to="/cart">

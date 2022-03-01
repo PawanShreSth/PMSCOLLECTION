@@ -22,6 +22,18 @@ const UIRoutes = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
 
+      <Route path="/search/:keyword" element={<HomeScreen />} exact />
+
+      <Route path="/page/:pageNumber" element={<HomeScreen />} exact />
+
+      <Route
+        path="/search/:keyword/page/:pageNumber"
+        element={<HomeScreen />}
+        exact
+      />
+
+      <Route path="/" element={<HomeScreen />} exact />
+
       <Route path="/order/:orderId" element={<OrderPage />} />
 
       <Route path="/shipping" element={<ShippingPage />} />
@@ -45,6 +57,11 @@ const UIRoutes = () => {
       <Route path="/admin/userlist" element={<UserListPage />} />
 
       <Route path="/admin/productlist" element={<ProductListPage />} />
+
+      <Route
+        path="/admin/productlist/:pageNumber"
+        element={<ProductListPage />}
+      />
 
       <Route path="/admin/orderlist" element={<OrderListPage />} />
 

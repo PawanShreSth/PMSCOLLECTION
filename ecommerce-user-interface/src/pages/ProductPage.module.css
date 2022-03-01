@@ -83,6 +83,36 @@
   background-color: hsl(250, 100%, 60%);
 }
 
+.reviewDiv {
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  /* background-color: rgb(180, 172, 172); */
+  border-radius: 1rem;
+  max-width: 1220px;
+}
+
+.reviewDiv > h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.individualReview {
+  background-color: rgb(216, 216, 211);
+  max-width: 600px;
+  margin: 0 auto;
+  list-style: none;
+  border-radius: 1rem;
+  outline: 1px solid gray;
+  outline-offset: -7px;
+  padding: 0.5rem 1rem;
+}
+
+.reviewForm {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
 @media (max-width: 999px) {
   .divChild {
     width: 40%;
