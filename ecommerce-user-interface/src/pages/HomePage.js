@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { gridContainer } from './HomePage.module.css';
 import Product from '../components/product/Product.js';
@@ -8,6 +8,8 @@ import { Container } from 'react-bootstrap';
 import Paginate from '../components/Paginate';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,14 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <Meta />
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (

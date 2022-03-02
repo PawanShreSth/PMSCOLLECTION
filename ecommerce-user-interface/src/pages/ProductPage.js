@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
 import { Button, Form } from 'react-bootstrap';
 import Rating from '../components/rating/Rating';
+import Meta from '../components/Meta';
 import {
   div,
   select,
@@ -78,6 +79,7 @@ const ProductPage = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <div className={div}>
             <img className={img} src={product.image} alt={product.name} />
             <div className={divChild}>

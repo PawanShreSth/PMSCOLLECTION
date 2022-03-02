@@ -129,7 +129,7 @@ const createdProductReview = async (req, res) => {
 
       const review = {
         name: req.user.name,
-        rating: Number(rating),
+        rating: Number(rating), // Rating of individual user
         comment,
         user: req.user._id,
       };
@@ -138,7 +138,8 @@ const createdProductReview = async (req, res) => {
 
       product.numReviews = product.reviews.length;
 
-      product.averageRating =
+      // Average rating out of all ratings
+      product.rating =
         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
         product.reviews.length;
 
@@ -157,6 +158,15 @@ const createdProductReview = async (req, res) => {
   }
 };
 
+// Description - Get Top Rated Products
+// Route - GET /api/products/top
+// Access - Public/
+const getTopProducts = async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.json(products);
+};
+
 export {
   getProducts,
   getProductById,
@@ -164,4 +174,5 @@ export {
   updateProduct,
   createProduct,
   createdProductReview,
+  getTopProducts,
 };
