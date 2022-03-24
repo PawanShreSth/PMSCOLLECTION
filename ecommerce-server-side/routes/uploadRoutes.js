@@ -40,7 +40,12 @@ const upload = multer({
 });
 
 router.post('/', upload.single('image'), (req, res) => {
-  res.send(`\\${req.file.path}`);
+  const file = req.file;
+  if (!file) return res.status(400).send('No image in the request');
+  const fileName = file.filename;
+  const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
+  // res.send(`\\${req.file.path}`);
+  res.send(`${basePath}${fileName}`);
 });
 
 export default router;
