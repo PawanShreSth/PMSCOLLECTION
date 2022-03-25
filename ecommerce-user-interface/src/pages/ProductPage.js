@@ -71,6 +71,10 @@ const ProductPage = () => {
     dispatch(createProductReview(id, { rating, comment }));
   };
 
+  if (typeof product.image === 'string' && product.image.includes('10.0.2.2')) {
+    product.image = product.image.replace('10.0.2.2', '127.0.0.1');
+  }
+
   return (
     <>
       {loading ? (

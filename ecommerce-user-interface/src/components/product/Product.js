@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 import { a, div, h3, img } from './Product.module.css';
 
 const Product = ({ _id, name, image, rating, price, numReviews }) => {
+  console.log(image);
+
+  if (typeof image === 'string' && image.includes('10.0.2.2')) {
+    image = image.replace('10.0.2.2', '127.0.0.1');
+  }
+
   return (
     <Card>
       <Link to={`/product/${_id}`}>

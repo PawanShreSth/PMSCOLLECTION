@@ -3,7 +3,12 @@ import Product from '../models/productModel.js';
 
 // When "/api/products/" route is hit then all products will be retrieved from DB and then sent to the client.
 const getProducts = async (req, res) => {
-  const pageSize = 10;
+  let pageSize;
+  if (req.query.pageNumber) {
+    pageSize = 10;
+  } else {
+    pageSize = 1000000;
+  }
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword

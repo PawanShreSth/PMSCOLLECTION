@@ -4,7 +4,7 @@ import reviewSchema from './reviewModel.js';
 const productSchema = mongoose.Schema(
   {
     // For determining which admin created a product - // Will hold user/admins ID
-    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     name: { type: String, required: true },
     image: { type: String, required: true },
     category: { type: String, required: true },

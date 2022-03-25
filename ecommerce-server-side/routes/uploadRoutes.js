@@ -7,7 +7,7 @@ const router = express.Router();
 const storage = multer.diskStorage({
   // location where the file gets saved
   destination(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, 'public/uploads');
   },
   filename(req, file, cb) {
     cb(
@@ -42,9 +42,13 @@ const upload = multer({
 router.post('/', upload.single('image'), (req, res) => {
   const file = req.file;
   if (!file) return res.status(400).send('No image in the request');
+
   const fileName = file.filename;
-  const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
+  console.log(fileName);
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+
   // res.send(`\\${req.file.path}`);
+  // res.status(201).send(`${basePath}${fileName}`);
   res.send(`${basePath}${fileName}`);
 });
 

@@ -32,7 +32,10 @@ app.get('/api/config/paypal', (req, res) => {
 });
 
 const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use(
+  '/public/uploads',
+  express.static(path.join(__dirname, '/public/uploads'))
+);
 
 // Below middleware runs when the API does not match
 app.use(notFound);
