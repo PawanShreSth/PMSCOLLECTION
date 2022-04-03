@@ -81,4 +81,48 @@ router.post(
   }
 );
 
+router.put(
+  '/mpu/:id',
+  protect,
+  admin,
+  uploadOptions.single('image'),
+  async (req, res) => {
+    const { name, price, description, image, category, countInStock } =
+      req.body;
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(400).send('Invalid Product!');
+
+    const file = req.file;
+    let imagepath = '';
+
+    if (file) {
+      const fileName = file.filename;
+      const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+      imagepath = `${basePath}${fileName}`;
+    } else {
+      imagepath = product.image;
+    }
+
+    if (product) {
+      product.name = name || product.name;
+      product.price = price || product.price;
+      product.description = description || product.description;
+      product.image = imagepath;
+      product.category = category || product.category;
+      product.countInStock = countInStock || product.countInStock;
+
+      const updatedProduct = await product.save();
+      res.status(201).json(updatedProduct);
+    } else {
+      res.status(404);
+      throw new Error('Product not found');
+    }
+
+    if (!updatedProduct)
+      return res.status(500).send('the product cannot be updated!');
+
+    res.send(updatedProduct);
+  }
+);
+
 export default router;
