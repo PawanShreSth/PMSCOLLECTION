@@ -35,6 +35,11 @@ export const addOrderItems = async (req, res) => {
       // Once saved mongodb will automatically assign a unique id
       const createdOrder = await order.save();
 
+      if (!createdOrder) {
+        res.status(404).json({
+          message: 'Order not created',
+        });
+      }
       res.status(201).json(createdOrder);
     }
   } catch (error) {
@@ -69,7 +74,7 @@ export const getOrderById = async (req, res) => {
 };
 
 // Description - Update order status to paid
-// Route - GET /api/orders/:id/pay
+// Route - PUT /api/orders/:id/pay/admin
 // Access - Private
 export const updateOrderStatusToPaid = async (req, res) => {
   try {
@@ -86,7 +91,7 @@ export const updateOrderStatusToPaid = async (req, res) => {
         email_address: req.body.payer.email_address,
       };
 
-      const updateOrder = await order.save();
+      const updatedOrder = await order.save();
 
       res.json(updatedOrder);
     } else {
@@ -143,7 +148,34 @@ export const updateOrderStatusToDelivered = async (req, res) => {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
 
-      const updateOrder = await order.save();
+      const updatedOrder = await order.save();
+
+      res.json(updatedOrder);
+    } else {
+      res.status(404);
+      throw new Error('Order not found');
+    }
+  } catch (error) {
+    res.json({
+      message: error.message,
+    });
+  }
+};
+
+// Description - Update order status to paid by admin
+// Route - PUT /api/orders/:id/pay/admin
+// Access - Private
+export const updateOrderStatusToPaidByAdmin = async (req, res) => {
+  try {
+    // in user, name and email will be taken from user document
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = Date.now();
+      order.paymentMethod = req.body.paymentMethod;
+
+      const updatedOrder = await order.save();
 
       res.json(updatedOrder);
     } else {
