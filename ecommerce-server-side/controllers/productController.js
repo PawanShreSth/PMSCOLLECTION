@@ -124,6 +124,7 @@ const createdProductReview = async (req, res) => {
 
     if (product) {
       const alreadyReviewed = product.reviews.find(
+        // here user is user id
         r => r.user.toString() === req.user._id.toString()
       );
 

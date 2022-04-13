@@ -46,7 +46,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (email.trim() === '' || password.trim() === '') {
-      message.error('Please enter email and password!');
+      alert('Please enter email and password!');
       return;
     }
 

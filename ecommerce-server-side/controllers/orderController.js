@@ -74,7 +74,7 @@ export const getOrderById = async (req, res) => {
 };
 
 // Description - Update order status to paid
-// Route - PUT /api/orders/:id/pay/admin
+// Route - PUT /api/orders/:id/pay
 // Access - Private
 export const updateOrderStatusToPaid = async (req, res) => {
   try {
@@ -82,8 +82,15 @@ export const updateOrderStatusToPaid = async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
-      order.isPaid = true;
-      order.paidAt = Date.now();
+      if (
+        req.body.id &&
+        req.body.status &&
+        req.body.update_time &&
+        req.body.payer.email_address
+      ) {
+        order.isPaid = true;
+        order.paidAt = Date.now();
+      }
       order.paymentResult = {
         id: req.body.id,
         status: req.body.status,

@@ -44,6 +44,8 @@ const OrderPage = () => {
     // Building script tag dynamically usinh JS DOM.
     const addPaypalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
+
+      // creating script tag
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
@@ -183,10 +185,13 @@ const OrderPage = () => {
               {!sdkReady ? (
                 <Loader />
               ) : (
-                <PayPalButton
-                  amount={order.totalPrice}
-                  onSuccess={successPaymentHandler}
-                />
+                order &&
+                order.paymentMethod === 'PayPal' && (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successPaymentHandler}
+                  />
+                )
               )}
             </div>
           )}

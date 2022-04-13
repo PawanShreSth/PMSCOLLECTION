@@ -68,6 +68,12 @@ const ProductPage = () => {
 
   const submitHandler = e => {
     e.preventDefault();
+
+    if (rating === 0 || comment.trim() === '') {
+      alert('Add a rating and review first before submitting a review!');
+      return;
+    }
+
     dispatch(createProductReview(id, { rating, comment }));
   };
 
