@@ -34,10 +34,16 @@ const RegisterPage = () => {
   const { loading, error, userInfo } = userRegister;
 
   let query = useQuery();
-  const redirect = query.get('redirect') ? query.get('redirect') : '/';
+  let redirect;
+  if (query.get('redirect') && query.get('redirect').includes('shipping')) {
+    redirect = '/shipping';
+  } else {
+    redirect = query.get('redirect') ? query.get('redirect') : '/';
+  }
 
   useEffect(() => {
     if (userInfo) {
+      console.log(redirect);
       // window.location.href = redirect;
       navigate(redirect);
     }
