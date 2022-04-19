@@ -7,6 +7,7 @@ import {
   deliverOrder,
   getOrderDetails,
   payOrder,
+  payOrderAdmin,
 } from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -35,6 +36,9 @@ const OrderPage = () => {
 
   const orderDeliver = useSelector(s => s.orderDeliver);
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  const orderAdminPay = useSelector(s => s.orderAdminPay);
+  const { loading: loadingAdminPay, success: successAdminPay } = orderAdminPay;
 
   useEffect(() => {
     if (!userInfo) {
@@ -70,6 +74,12 @@ const OrderPage = () => {
   }, [dispatch, orderId, successPay, successDeliver, order]);
 
   useEffect(() => {
+    if (successAdminPay) {
+      window.location.reload();
+    }
+  }, [successAdminPay]);
+
+  useEffect(() => {
     dispatch({ type: ORDER_DETAILS_RESET });
   }, [dispatch]);
 
@@ -80,6 +90,10 @@ const OrderPage = () => {
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order));
+  };
+
+  const payHandlerAdmin = () => {
+    dispatch(payOrderAdmin(orderId));
   };
 
   console.log(order);
@@ -209,6 +223,21 @@ const OrderPage = () => {
               </Button>
             </div>
           )}
+
+          {userInfo &&
+            userInfo.isAdmin &&
+            !order.isPaid &&
+            order.paymentMethod !== 'PayPal' && (
+              <div>
+                <Button
+                  type="button"
+                  className="btn btn-block"
+                  onClick={payHandlerAdmin}
+                >
+                  Mark As Paid
+                </Button>
+              </div>
+            )}
         </div>
       </div>
 

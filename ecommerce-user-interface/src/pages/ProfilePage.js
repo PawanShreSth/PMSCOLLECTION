@@ -90,7 +90,7 @@ const ProfilePage = () => {
               value={name}
               type="name"
               name="name"
-              placeholder="John smith"
+              placeholder="Username"
             />
 
             <label htmlFor="email">Email</label>

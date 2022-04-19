@@ -180,7 +180,7 @@ export const updateOrderStatusToPaidByAdmin = async (req, res) => {
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
-      order.paymentMethod = req.body.paymentMethod;
+      // order.paymentMethod = req.body.paymentMethod || 'Pa';
 
       const updatedOrder = await order.save();
 
